@@ -3,96 +3,84 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+    
+    [SerializeField] float _movingSpeed;
+    [SerializeField] float _jumpForce;
+    
+    private float _moveInput;
+    private bool _facingRight = false;
+    private bool _isGrounded;
+    
+    public Transform groundCheck;
+    
+    private Rigidbody2D _rigidbody;
+    private Animator _animator;
 
-        public float movingSpeed;
-        public float jumpForce;
-        private float moveInput;
+    [SerializeField] GameManager _gameManager;
+    [SerializeField] PlayerManager _playerManager;
 
-        private bool facingRight = false;
-        [HideInInspector]
-        public bool deathState = false;
+    void Start() {
+        
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        if (_gameManager == null) { _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>(); }
+        if (_playerManager == null) { _playerManager = GetComponent<PlayerManager>(); }
+    
+    }
+    
+    private void FixedUpdate() {
+        
+        CheckGround();
+    
+    }
 
-        private bool isGrounded;
-        public Transform groundCheck;
+    void Update() {
 
-        private Rigidbody2D _rigidbody;
-        private Animator animator;
-        private GameManager gameManager;
+        if (!_playerManager.m_deathState) {
 
-        void Start()
-        {
-            _rigidbody = GetComponent<Rigidbody2D>();
-            animator = GetComponent<Animator>();
-            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        }
+            if (Input.GetButton("Horizontal")) {
 
-        private void FixedUpdate()
-        {
-            CheckGround();
-        }
+                _moveInput = Input.GetAxis("Horizontal");
+                Vector3 direction = transform.right * _moveInput;
+                transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, _movingSpeed * Time.deltaTime);
+                _animator.SetInteger("playerState", 1); // Turn on run animation
 
-        void Update()
-        {
-            if (Input.GetButton("Horizontal")) 
-            {
-                moveInput = Input.GetAxis("Horizontal");
-                Vector3 direction = transform.right * moveInput;
-                transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, movingSpeed * Time.deltaTime);
-                animator.SetInteger("playerState", 1); // Turn on run animation
             }
-            else
-            {
-                if (isGrounded) animator.SetInteger("playerState", 0); // Turn on idle animation
-            }
-            if(Input.GetKeyDown(KeyCode.Space) && isGrounded )
-            {
-                _rigidbody.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-            }
-            if (!isGrounded)animator.SetInteger("playerState", 2); // Turn on jump animation
 
-            if(facingRight == false && moveInput > 0)
-            {
-                Flip();
-            }
-            else if(facingRight == true && moveInput < 0)
-            {
-                Flip();
-            }
-        }
+            else {
 
-        private void Flip()
-        {
-            facingRight = !facingRight;
-            Vector3 Scaler = transform.localScale;
-            Scaler.x *= -1;
-            transform.localScale = Scaler;
-        }
+                if (_isGrounded) _animator.SetInteger("playerState", 0); // Turn on idle animation
 
-        private void CheckGround()
-        {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.transform.position, 0.2f);
-            isGrounded = colliders.Length > 1;
-        }
+            }
 
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            if (other.gameObject.tag == "Enemy")
-            {
-                deathState = true; // Say to GameManager that player is dead
-            }
-            else
-            {
-                deathState = false;
-            }
-        }
+            if (Input.GetKeyDown(KeyCode.Space) && _isGrounded) {
 
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.gameObject.tag == "Coin")
-            {
-                gameManager.coinsCounter += 1;
-                Destroy(other.gameObject);
+                _rigidbody.AddForce(transform.up * _jumpForce, ForceMode2D.Impulse);
+
             }
+
+            if (!_isGrounded) _animator.SetInteger("playerState", 2); // Turn on jump animation
+
+            if ((!_facingRight && _moveInput > 0) || (_facingRight && _moveInput < 0)) Flip();
+
         }
     }
+    
+    private void Flip() {
+        
+        _facingRight = !_facingRight;
+        Vector3 Scaler = transform.localScale;
+        Scaler.x *= -1;
+        transform.localScale = Scaler;
+    
+    }
+    
+    private void CheckGround() {
+        
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.transform.position, 0.2f);
+        _isGrounded = colliders.Length > 1;
+    
+    }
+
+}
 

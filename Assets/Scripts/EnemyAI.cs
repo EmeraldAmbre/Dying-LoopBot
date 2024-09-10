@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
-    {
-        public float moveSpeed = 1f; 
-        public LayerMask ground;
-        public LayerMask wall;
-
-        private Rigidbody2D _rigidbody; 
-        public Collider2D triggerCollider;
+public class EnemyAI : MonoBehaviour {
+    
+    public float moveSpeed = 1f;
+    public LayerMask ground;
+    public LayerMask wall;
+    
+    private Rigidbody2D _rigidbody;
+    public Collider2D triggerCollider;
         
         void Start()
         {
