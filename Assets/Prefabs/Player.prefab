@@ -196,9 +196,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movingSpeed: 5
-  _jumpForce: 10
   groundCheck: {fileID: 6952628394686255622}
   _gameManager: {fileID: 0}
+  _platformLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
   _playerManager: {fileID: 768439867213242141}
 --- !u!114 &768439867213242141
 MonoBehaviour:
