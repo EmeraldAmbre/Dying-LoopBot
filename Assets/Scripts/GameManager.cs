@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
     
     public int m_coinsCounter = 0;
-    public int m_deathsCounter = -1;
+    public int m_deathsCounter = 0;
     
     [SerializeField] GameObject _playerPrefab;
     [SerializeField] GameObject _deathPlayerPrefab;
-    [SerializeField] GameObject _activeCheckpoint;
     [SerializeField] PlayerManager _playerManager;
+    [SerializeField] GameObject _activeCheckpoint;
 
     [SerializeField] Text _coinText;
     [SerializeField] Text _craneText;
@@ -44,6 +44,12 @@ public class GameManager : MonoBehaviour {
 
         _activePlayer = Instantiate(_playerPrefab, _activeCheckpoint.transform.position, _activeCheckpoint.transform.rotation);
         _playerManager = _activePlayer.GetComponent<PlayerManager>();
+
+    }
+
+    public void ChangeActiveCheckpoint(GameObject cp) {
+
+        _activeCheckpoint = cp;
 
     }
 
