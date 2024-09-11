@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5230720888154921348}
   - component: {fileID: 846332424561528291}
   - component: {fileID: 6124932640275557973}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -135,4 +135,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isGoingRight: 0
   m_lifeTime: 10
-  _isIceBullet: 0
+  m_isIceBullet: 0

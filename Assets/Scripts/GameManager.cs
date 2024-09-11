@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
+
+    public bool m_freezeTest;
     
     public int m_coinsCounter = 0;
     public int m_deathsCounter = 0;
@@ -19,7 +22,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] GameObject _activePlayer;
 
     void Start() {
-        
+
         _activePlayer = Instantiate(_playerPrefab, _activeCheckpoint.transform.position, _activeCheckpoint.transform.rotation);
         _playerManager = _activePlayer.GetComponent<PlayerManager>();
     
@@ -33,8 +36,17 @@ public class GameManager : MonoBehaviour {
         if (_playerManager.m_deathState) {
 
             _activePlayer.SetActive(false);
-            GameObject deathPlayer = Instantiate(_deathPlayerPrefab, _activePlayer.transform.position, _activePlayer.transform.rotation);
-            deathPlayer.transform.localScale = new Vector3(_playerPrefab.transform.localScale.x, _playerPrefab.transform.localScale.y, _playerPrefab.transform.localScale.z);
+            GameObject deadPlayer = Instantiate(_deathPlayerPrefab, _activePlayer.transform.position, _activePlayer.transform.rotation);
+            deadPlayer.transform.localScale = new Vector3(_playerPrefab.transform.localScale.x, _playerPrefab.transform.localScale.y, _playerPrefab.transform.localScale.z);
+            
+            if (m_freezeTest) {
+
+                DeadPlayerManager deadPlayerManager = deadPlayer.GetComponent<DeadPlayerManager>();
+                deadPlayerManager.Freeze();
+                m_freezeTest = false;
+
+            }
+
             Respawn();
         
         }

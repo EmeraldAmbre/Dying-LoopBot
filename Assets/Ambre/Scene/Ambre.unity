@@ -21722,8 +21722,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1194644602033653538, guid: 7bc664d54c1f92541b6f62d897c75c10, type: 3}
+      propertyPath: _bulletPrefab
+      value: 
+      objectReference: {fileID: 3299635349750677119, guid: 7c2895d1e51208240a8adae4eb779fae, type: 3}
+    - target: {fileID: 1194644602033653538, guid: 7bc664d54c1f92541b6f62d897c75c10, type: 3}
       propertyPath: m_facingRight
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3686849915309230948, guid: 7bc664d54c1f92541b6f62d897c75c10, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22019,6 +22023,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1593941482789586315, guid: e4bb4b95ac105a94fac2cb530b664d22, type: 3}
+      propertyPath: _bumpForce
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 4503071765633552426, guid: e4bb4b95ac105a94fac2cb530b664d22, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.85

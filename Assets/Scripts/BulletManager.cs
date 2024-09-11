@@ -13,7 +13,7 @@ public class BulletManager : MonoBehaviour {
 
     private bool _rotated;
 
-    [SerializeField] bool _isIceBullet;
+    public bool m_isIceBullet;
 
     void Awake() {
 
@@ -53,4 +53,11 @@ public class BulletManager : MonoBehaviour {
         }
         
     }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+
+        Debug.Log("Bullet collides");
+        
+    }
+
 }

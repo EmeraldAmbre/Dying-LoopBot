@@ -58,14 +58,11 @@ public class PlayerController : MonoBehaviour {
         if (_playerManager == null) { _playerManager = GetComponent<PlayerManager>(); }
 
         _rigidbody.gravityScale = _initGravityScale;
-
-        Debug.Log("_rigidbody.gravityScale" + _rigidbody.gravityScale);
     }
     
     private void FixedUpdate() 
     {
         CheckGround();
-        Debug.Log("Is grounded: " + _isGrounded);
     }
 
     void Update() {
@@ -167,7 +164,6 @@ public class PlayerController : MonoBehaviour {
         if (_currentJumpBufferTime > 0 && _isGrounded)
         {
             Jump();
-            Debug.Log("Buffer jump");
         }
     }
 
@@ -207,7 +203,6 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space) && _currentCoyoteTime > 0)
         {
             Jump();
-            Debug.Log("Coyote jump");
         }
 
         // Reset coyotetimer on ground

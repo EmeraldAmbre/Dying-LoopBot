@@ -28,6 +28,17 @@ public class PlayerManager : MonoBehaviour {
             Destroy(other.gameObject);
 
         }
+
+        else if (other.gameObject.tag == "Bullet") {
+
+            BulletManager bulletManager = other.gameObject.GetComponent<BulletManager>();
+
+            if (bulletManager.m_isIceBullet) _gameManager.m_freezeTest = true;
+
+            _gameManager.m_deathsCounter += 1;
+            m_deathState = true;
+
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other) {

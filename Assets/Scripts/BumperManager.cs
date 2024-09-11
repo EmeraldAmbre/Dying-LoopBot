@@ -17,6 +17,7 @@ public class BumperManager : MonoBehaviour {
             _playerRigidbody = other.gameObject.GetComponent<Rigidbody2D>();
 
             if (_playerManager.m_deathState == false) {
+                _playerRigidbody.velocity = Vector3.zero;
                 _playerRigidbody.AddForce(Vector2.up * _bumpForce, ForceMode2D.Impulse);
             }
         }

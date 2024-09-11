@@ -10,6 +10,7 @@ public class ShootingEnemyAI : MonoBehaviour {
     [SerializeField] float _moveLoopDuration = 2f;
     [SerializeField] float _shootLoopDuration = 2f;
     [SerializeField] GameObject _bulletPrefab;
+    [SerializeField] GameObject _shootingPoint;
 
     private Rigidbody2D _rigidbody;
     private CapsuleCollider2D _hitBox;
@@ -50,7 +51,7 @@ public class ShootingEnemyAI : MonoBehaviour {
         if (_shootTimer <= 0) {
 
             _shootTimer = _shootLoopDuration;
-            GameObject bullet = Instantiate(_bulletPrefab, transform.position, transform.rotation);
+            GameObject bullet = Instantiate(_bulletPrefab, _shootingPoint.transform.position, transform.rotation);
             BulletManager bulletManager = bullet.GetComponent<BulletManager>();
             bulletManager.m_isGoingRight = m_facingRight;
             Destroy(bullet, bulletManager.m_lifeTime);
