@@ -24,8 +24,11 @@ public class PlayerController : MonoBehaviour {
     // Basic player movement parameters
     private float _movingSpeed = 5;
     private float _jumpForce = 12f;
-    private float _jumpAirHandlingForce = 2.4f;
+    private float _jumpAirHandlingForce = 33f;
     private bool _hasJump = false;
+
+    private bool _isJumpTriggered = false;
+    private bool _isJumpgHanndlingTriggered = false;
 
     // Gravity parameters
     private float _initGravityScale = 5.35f;
@@ -36,16 +39,16 @@ public class PlayerController : MonoBehaviour {
     private float _jumpBufferTime = 0.14f;
     private float _currentJumpBufferTime = 0;
 
-    private float _coyoteTime = 0.14f;
-    private float _currentCoyoteTime = 0;
+    private float _coyoteTime = 0.13f;
+    private float _currentCoyoteTime = 0.0f;
     private bool _hasStartedCoyoteTimer = false;
 
    // Data to clamp velocity 
-    private float _xMinVelocity = -1000;
-    private float _xMaxVelocity = 1000;
+    private float _xMinVelocity = -20;
+    private float _xMaxVelocity = 20;
 
-    private float _yMinVelocity = -1000;
-    private float _yMaxVelocity = 1000;
+    private float _yMinVelocity = -13;
+    private float _yMaxVelocity = 20;
 
 
 
@@ -63,11 +66,24 @@ public class PlayerController : MonoBehaviour {
     private void FixedUpdate() 
     {
         CheckGround();
+
+        if(_isJumpTriggered) 
+        {
+            Jump();
+            _isJumpTriggered = false;
+        }
+
+        if(_isJumpgHanndlingTriggered)
+        {
+            _rigidbody.AddForce(transform.up * _jumpAirHandlingForce, ForceMode2D.Force);
+        }
+
+        ClampVelocity();
+        Debug.Log("Velocity " + _rigidbody.velocity);
     }
 
     void Update() {
 
-        Debug.Log("Velocity x : " + _rigidbody.velocity);
 
 
         if (!_playerManager.m_deathState)
@@ -97,8 +113,6 @@ public class PlayerController : MonoBehaviour {
             HandleJump();
 
             HandleGravityChanges();
-
-            ClampVelocity();
 
             if (!_isGrounded) _animator.SetInteger("playerState", 2); // Turn on jump animation
 
@@ -166,21 +180,30 @@ public class PlayerController : MonoBehaviour {
 
         if (_currentJumpBufferTime > 0 && _isGrounded)
         {
-            Jump();
+            _isJumpTriggered = true; 
+            _isGrounded = false;
+            _hasJump = true;
+            Debug.Log("Buffer Jump");
         }
     }
 
     private void HandleJump()
     {
-        if (_isGrounded && !_hasJump) _hasJump = true;
+        if (_isGrounded && _hasJump) _hasJump = false;
 
         if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
         {
-            Jump();
+            _isJumpTriggered = true;
+            _isGrounded = false;
+            _hasJump = true;
         }
         else if (Input.GetKey(KeyCode.Space) && !_isGrounded && _hasJump && _rigidbody.velocity.y > 0)
         {
-            _rigidbody.AddForce(transform.up * _jumpAirHandlingForce, ForceMode2D.Force);
+            _isJumpgHanndlingTriggered = true;
+        }
+        else
+        {
+            _isJumpgHanndlingTriggered = false;
         }
     }
 
@@ -191,6 +214,7 @@ public class PlayerController : MonoBehaviour {
         _rigidbody.AddForce(transform.up * _jumpForce, ForceMode2D.Impulse);
         _isGrounded = false;
         _hasJump = true;
+        _currentCoyoteTime = 0;
     }
 
     private void HandleCoyoteJump()
@@ -203,9 +227,12 @@ public class PlayerController : MonoBehaviour {
         }
 
         // Check jump on coyote timer on
-        if (Input.GetKeyDown(KeyCode.Space) && _currentCoyoteTime > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && _currentCoyoteTime > 0 && !_hasJump)
         {
-            Jump();
+            _isJumpTriggered = true;
+            _isGrounded = false;
+            _hasJump = true;
+            Debug.Log("Coyote jump");
         }
 
         // Reset coyotetimer on ground
@@ -218,9 +245,9 @@ public class PlayerController : MonoBehaviour {
         {
             _currentCoyoteTime = 0;
         }
-        else
+        else if(_hasStartedCoyoteTimer)
         {
-            _currentCoyoteTime -= Time.deltaTime;
+            _currentCoyoteTime = _currentCoyoteTime - Time.deltaTime;
         }
     } 
     #endregion
