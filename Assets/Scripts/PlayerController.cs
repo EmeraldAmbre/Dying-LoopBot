@@ -67,6 +67,9 @@ public class PlayerController : MonoBehaviour {
 
     void Update() {
 
+        Debug.Log("Velocity x : " + _rigidbody.velocity);
+
+
         if (!_playerManager.m_deathState)
         {
 
