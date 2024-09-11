@@ -7,13 +7,14 @@ public class PlayerController : MonoBehaviour {
 
 
     private float _moveInput;
-    private bool _facingRight = false;
     private bool _isGrounded;
-    
+    private float _direction = 1;
+
+
     public Transform groundCheck;
     
     private Rigidbody2D _rigidbody;
-    private BoxCollider2D _collider;
+    private CapsuleCollider2D _collider;
     private Animator _animator;
 
     [SerializeField] GameManager _gameManager;
@@ -55,7 +56,7 @@ public class PlayerController : MonoBehaviour {
     void Start() 
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<BoxCollider2D>();
+        _collider = GetComponent<CapsuleCollider2D>();
         _animator = GetComponent<Animator>();
         if (_gameManager == null) { _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>(); }
         if (_playerManager == null) { _playerManager = GetComponent<PlayerManager>(); }
@@ -88,23 +89,7 @@ public class PlayerController : MonoBehaviour {
 
         if (!_playerManager.m_deathState)
         {
-
-            if (Input.GetButton("Horizontal"))
-            {
-
-                _moveInput = Input.GetAxis("Horizontal");
-                Vector3 direction = transform.right * _moveInput;
-                transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, _movingSpeed * Time.deltaTime);
-                _animator.SetInteger("playerState", 1); // Turn on run animation
-
-            }
-
-            else
-            {
-
-                if (_isGrounded) _animator.SetInteger("playerState", 0); // Turn on idle animation
-
-            }
+            HandleWalkMovement();
 
             HandleJumpBuffering();
 
@@ -116,16 +101,30 @@ public class PlayerController : MonoBehaviour {
 
             if (!_isGrounded) _animator.SetInteger("playerState", 2); // Turn on jump animation
 
-            if ((!_facingRight && _moveInput > 0) || (_facingRight && _moveInput < 0)) Flip();
+            HandleFlip();
 
         }
     }
 
-    private void Flip() {
-        
-        _facingRight = !_facingRight;
+    private void HandleWalkMovement()
+    {
+        if (Input.GetButton("Horizontal"))
+        {
+            _moveInput = Input.GetAxis("Horizontal");
+            _direction = (transform.right * _moveInput).x;
+            transform.position = Vector3.MoveTowards(transform.position, transform.position + (transform.right * _moveInput), _movingSpeed * Time.deltaTime);
+            _animator.SetInteger("playerState", 1); // Turn on run animation
+        }
+        else
+        {
+            if (_isGrounded) _animator.SetInteger("playerState", 0); // Turn on idle animation
+        }
+    }
+
+    private void HandleFlip() {
         Vector3 Scaler = transform.localScale;
-        Scaler.x *= -1;
+        if (_direction > 0) Scaler.x = Mathf.Abs(Scaler.x);
+        else if (_direction < 0) Scaler.x = -Mathf.Abs(Scaler.x);
         transform.localScale = Scaler;
     
     }
