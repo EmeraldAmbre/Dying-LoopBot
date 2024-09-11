@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Checkpoint : MonoBehaviour {
 
     [SerializeField] GameManager _gameManager;
+    [SerializeField] bool _isFinalCheckpoint;
+    [SerializeField] string _sceneTransitionName;
+    [SerializeField] float _sceneTransitionDelay = 1f;
 
     public bool m_isActive;
 
@@ -23,10 +27,16 @@ public class Checkpoint : MonoBehaviour {
 
         if (other.gameObject.tag == "Player") {
 
+            if (_isFinalCheckpoint) {
+
+                StartCoroutine(LoadSceneWithDelay(_sceneTransitionDelay, _sceneTransitionName));
+                return;
+
+            }
+
             _allCheckpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
 
-            foreach (var checkpoint in _allCheckpoints)
-            {
+            foreach (var checkpoint in _allCheckpoints) {
 
                 Checkpoint manager = checkpoint.GetComponent<Checkpoint>();
                 manager.m_isActive = false;
@@ -40,4 +50,11 @@ public class Checkpoint : MonoBehaviour {
         }
     }
 
+    private IEnumerator LoadSceneWithDelay(float delay, string sceneName) {
+
+        yield return new WaitForSeconds(delay);
+
+        SceneManager.LoadScene(sceneName);
+
+    }
 }
