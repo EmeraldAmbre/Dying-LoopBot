@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour {
         }
 
         ClampVelocity();
-        Debug.Log("Velocity " + _rigidbody.velocity);
     }
 
     void Update() {
@@ -182,7 +181,6 @@ public class PlayerController : MonoBehaviour {
             _isJumpTriggered = true; 
             _isGrounded = false;
             _hasJump = true;
-            Debug.Log("Buffer Jump");
         }
     }
 
@@ -231,7 +229,6 @@ public class PlayerController : MonoBehaviour {
             _isJumpTriggered = true;
             _isGrounded = false;
             _hasJump = true;
-            Debug.Log("Coyote jump");
         }
 
         // Reset coyotetimer on ground

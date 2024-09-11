@@ -12,6 +12,8 @@ public class ShootingEnemyAI : MonoBehaviour {
     [SerializeField] GameObject _bulletPrefab;
     [SerializeField] GameObject _shootingPoint;
 
+
+    private Animator _animator;
     private Rigidbody2D _rigidbody;
     private CapsuleCollider2D _hitBox;
     private float _timer;
@@ -25,6 +27,7 @@ public class ShootingEnemyAI : MonoBehaviour {
         _hitBox = GetComponent<CapsuleCollider2D>();
         _timer = _moveLoopDuration;
         _shootTimer = _shootLoopDuration;
+        _animator = GetComponent<Animator>();
 
         if (!m_facingRight && _isStatic) StupeFlip();
 
@@ -51,9 +54,10 @@ public class ShootingEnemyAI : MonoBehaviour {
         if (_shootTimer <= 0) {
 
             _shootTimer = _shootLoopDuration;
-            GameObject bullet = Instantiate(_bulletPrefab, _shootingPoint.transform.position, transform.rotation);
+            GameObject bullet = Instantiate(_bulletPrefab, _shootingPoint.transform.position, _shootingPoint.transform.rotation);
             BulletManager bulletManager = bullet.GetComponent<BulletManager>();
             bulletManager.m_isGoingRight = m_facingRight;
+            _animator.SetTrigger("isShooting");
             Destroy(bullet, bulletManager.m_lifeTime);
 
         }

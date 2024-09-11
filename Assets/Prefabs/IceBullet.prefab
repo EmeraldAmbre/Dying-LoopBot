@@ -287,8 +287,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.1
-      minScalar: 0.02
+      scalar: 0.15
+      minScalar: 0.05
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4967,3 +4967,4 @@ MonoBehaviour:
   m_isGoingRight: 0
   m_lifeTime: 10
   m_isIceBullet: 1
+  particules: {fileID: 7743820067848429656}
