@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour {
     private void FixedUpdate() 
     {
         CheckGround();
+        Debug.Log("Is grounded: " + _isGrounded);
     }
 
     void Update() {
@@ -119,16 +120,13 @@ public class PlayerController : MonoBehaviour {
         
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.transform.position, 0.2f);
         float extraHeightTest = 0.1f;
-        RaycastHit2D raycastHit = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size - new Vector3(0.1f, 0f, 0f), 0f, Vector2.down, extraHeightTest, _platformLayerMask);
+        RaycastHit2D raycastHitGround = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size - new Vector3(0.5f, 0f, 0f), 0f, Vector2.down, extraHeightTest, _platformLayerMask);
+        Color raycastGroundColor = Color.blue;
+        Debug.DrawRay(_collider.bounds.center + new Vector3(_collider.bounds.extents.x, 0), Vector2.down * (_collider.bounds.extents.y + extraHeightTest), raycastGroundColor);
+        Debug.DrawRay(_collider.bounds.center - new Vector3(_collider.bounds.extents.x, 0), Vector2.down * (_collider.bounds.extents.y + extraHeightTest), raycastGroundColor);
+        Debug.DrawRay(_collider.bounds.center - new Vector3(_collider.bounds.extents.x, _collider.bounds.extents.y + extraHeightTest), Vector2.right * (_collider.bounds.extents.x) * 2, raycastGroundColor);
 
-        Color rayColor = Color.blue;
-        Debug.DrawRay(_collider.bounds.center + new Vector3(_collider.bounds.extents.x, 0), Vector2.down * (_collider.bounds.extents.y + extraHeightTest), rayColor);
-        Debug.DrawRay(_collider.bounds.center - new Vector3(_collider.bounds.extents.x, 0), Vector2.down * (_collider.bounds.extents.y + extraHeightTest), rayColor);
-        Debug.DrawRay(_collider.bounds.center - new Vector3(_collider.bounds.extents.x, _collider.bounds.extents.y + extraHeightTest), Vector2.right * (_collider.bounds.extents.x) * 2, rayColor);
-
-
-
-        _isGrounded = raycastHit.collider != null;
+        _isGrounded = raycastHitGround.collider != null;
     
     }
 
