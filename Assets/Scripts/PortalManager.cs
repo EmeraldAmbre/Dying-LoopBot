@@ -20,7 +20,7 @@ public class PortalManager : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
 
-        if (m_isActive && other.gameObject.tag == "Player") {
+        if (m_isActive && (other.gameObject.tag == "Player" || other.gameObject.tag == "Corpse")) {
 
             m_isActive = false;
             _pairedPortalManager.m_isActive = false;
