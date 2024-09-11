@@ -56,7 +56,7 @@ public class BulletManager : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
 
-        Debug.Log("Bullet collides");
+        Destroy(gameObject);
         
     }
 

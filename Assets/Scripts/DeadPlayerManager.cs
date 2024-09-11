@@ -15,7 +15,7 @@ public class DeadPlayerManager : MonoBehaviour {
 
     public void Freeze() {
 
-        _rigidbody.bodyType = RigidbodyType2D.Static;
+        _rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
     }
 
