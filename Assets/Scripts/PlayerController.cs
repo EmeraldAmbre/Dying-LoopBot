@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     
-    [SerializeField] float _movingSpeed;
-    private float _jumpForce = 10;
-    
+
+
     private float _moveInput;
     private bool _facingRight = false;
     private bool _isGrounded;
@@ -22,37 +21,59 @@ public class PlayerController : MonoBehaviour {
     
     [SerializeField] PlayerManager _playerManager;
 
+    // Basic player movement parameters
+    private float _movingSpeed = 5;
+    private float _jumpForce = 12f;
+    private float _jumpAirHandlingForce = 2.4f;
+    private bool _hasJump = false;
 
+    // Gravity parameters
+    private float _initGravityScale = 5.35f;
+    private float _currentGravityScale => _rigidbody.gravityScale;
+    private float _gravityScaleOnFall = 3.5f;
 
-    // Timer fo improving game feel
-    private float _jumpBufferTime = 0.13f;
+    // Parameter for coyote jump and jump buffering 
+    private float _jumpBufferTime = 0.14f;
     private float _currentJumpBufferTime = 0;
 
-    private float _coyoteTime = 0.13f;
+    private float _coyoteTime = 0.14f;
     private float _currentCoyoteTime = 0;
     private bool _hasStartedCoyoteTimer = false;
 
-    void Start() {
-        
+   // Data to clamp velocity 
+    private float _xMinVelocity = -1000;
+    private float _xMaxVelocity = 1000;
+
+    private float _yMinVelocity = -1000;
+    private float _yMaxVelocity = 1000;
+
+
+
+    void Start() 
+    {
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<BoxCollider2D>();
         _animator = GetComponent<Animator>();
         if (_gameManager == null) { _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>(); }
         if (_playerManager == null) { _playerManager = GetComponent<PlayerManager>(); }
-    
+
+        _rigidbody.gravityScale = _initGravityScale;
+
+        Debug.Log("_rigidbody.gravityScale" + _rigidbody.gravityScale);
     }
     
-    private void FixedUpdate() {
-        
+    private void FixedUpdate() 
+    {
         CheckGround();
-    
     }
 
     void Update() {
 
-        if (!_playerManager.m_deathState) {
+        if (!_playerManager.m_deathState)
+        {
 
-            if (Input.GetButton("Horizontal")) {
+            if (Input.GetButton("Horizontal"))
+            {
 
                 _moveInput = Input.GetAxis("Horizontal");
                 Vector3 direction = transform.right * _moveInput;
@@ -61,7 +82,8 @@ public class PlayerController : MonoBehaviour {
 
             }
 
-            else {
+            else
+            {
 
                 if (_isGrounded) _animator.SetInteger("playerState", 0); // Turn on idle animation
 
@@ -69,10 +91,13 @@ public class PlayerController : MonoBehaviour {
 
             HandleJumpBuffering();
 
-            HandleCoyoteTimer();
+            HandleCoyoteJump();
 
             HandleJump();
 
+            HandleGravityChanges();
+
+            ClampVelocity();
 
             if (!_isGrounded) _animator.SetInteger("playerState", 2); // Turn on jump animation
 
@@ -80,7 +105,7 @@ public class PlayerController : MonoBehaviour {
 
         }
     }
-    
+
     private void Flip() {
         
         _facingRight = !_facingRight;
@@ -107,6 +132,32 @@ public class PlayerController : MonoBehaviour {
     
     }
 
+    #region Rigibody modification related methods
+    private void ClampVelocity()
+    {
+        Vector2 velocity = _rigidbody.velocity;
+
+        velocity.x = Mathf.Clamp(velocity.x, _xMinVelocity, _xMaxVelocity);
+        velocity.y = Mathf.Clamp(velocity.y, _yMinVelocity, _yMaxVelocity);
+
+        _rigidbody.velocity = velocity;
+    }
+
+    private void HandleGravityChanges()
+    {
+        // Increase gravity when the player fall, otherwise will set its normal gravity
+        if (!_isGrounded && _rigidbody.velocity.y <= 0 && _rigidbody.gravityScale != _gravityScaleOnFall)
+        {
+            _rigidbody.gravityScale = _gravityScaleOnFall;
+        }
+        else if (!_isGrounded && _rigidbody.velocity.y > 0 && _rigidbody.gravityScale != _initGravityScale)
+        {
+            _rigidbody.gravityScale = _initGravityScale;
+        }
+    } 
+    #endregion
+
+    #region Jump related methods
     private void HandleJumpBuffering()
     {
         _currentJumpBufferTime -= Time.deltaTime;
@@ -115,17 +166,25 @@ public class PlayerController : MonoBehaviour {
             _currentJumpBufferTime = _jumpBufferTime;
         }
 
-        if(_currentJumpBufferTime > 0 && _isGrounded) Jump();
+        if (_currentJumpBufferTime > 0 && _isGrounded)
+        {
+            Jump();
+            Debug.Log("Buffer jump");
+        }
     }
 
     private void HandleJump()
     {
+        if (_isGrounded && !_hasJump) _hasJump = true;
+
         if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
         {
             Jump();
-            Debug.Log("JUMP FROM GROUND");
         }
-
+        else if (Input.GetKey(KeyCode.Space) && !_isGrounded && _hasJump && _rigidbody.velocity.y > 0)
+        {
+            _rigidbody.AddForce(transform.up * _jumpAirHandlingForce, ForceMode2D.Force);
+        }
     }
 
     private void Jump()
@@ -133,33 +192,33 @@ public class PlayerController : MonoBehaviour {
         // _rigidbody.totalForce = Vector2.zero;
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.AddForce(transform.up * _jumpForce, ForceMode2D.Impulse);
-        Debug.Log("Velocity y" + _rigidbody.velocity.y);
         _isGrounded = false;
+        _hasJump = true;
     }
 
-    private void HandleCoyoteTimer()
+    private void HandleCoyoteJump()
     {
         // Start corote timer when player leave the ground
-        if(!_isGrounded && !_hasStartedCoyoteTimer && _rigidbody.velocity.y < 0 && _currentCoyoteTime == 0)
+        if (!_isGrounded && !_hasStartedCoyoteTimer && _rigidbody.velocity.y < 0 && _currentCoyoteTime == 0)
         {
             _currentCoyoteTime = _coyoteTime;
             _hasStartedCoyoteTimer = true;
         }
 
         // Check jump on coyote timer on
-        if(Input.GetKeyDown(KeyCode.Space) && _currentCoyoteTime > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && _currentCoyoteTime > 0)
         {
             Jump();
             Debug.Log("Coyote jump");
         }
 
         // Reset coyotetimer on ground
-        if(_isGrounded && _hasStartedCoyoteTimer)
+        if (_isGrounded && _hasStartedCoyoteTimer)
         {
             _hasStartedCoyoteTimer = false;
         }
 
-        if(_isGrounded)
+        if (_isGrounded)
         {
             _currentCoyoteTime = 0;
         }
@@ -167,8 +226,8 @@ public class PlayerController : MonoBehaviour {
         {
             _currentCoyoteTime -= Time.deltaTime;
         }
-        Debug.Log("_currentCoyoteTime  " + _currentCoyoteTime);
-    }
+    } 
+    #endregion
 
 }
 
