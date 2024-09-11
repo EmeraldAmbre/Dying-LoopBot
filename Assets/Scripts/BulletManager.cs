@@ -13,6 +13,8 @@ public class BulletManager : MonoBehaviour {
 
     private bool _rotated;
 
+    [SerializeField] bool _isIceBullet;
+
     void Awake() {
 
         _timer = m_lifeTime;

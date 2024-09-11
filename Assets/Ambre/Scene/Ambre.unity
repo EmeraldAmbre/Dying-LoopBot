@@ -22725,6 +22725,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7133808485827833944}
     - target: {fileID: 8125563719255511135, guid: 6cdb5ef6764ef30448310aba99d170e7, type: 3}
+      propertyPath: m_deathsCounter
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125563719255511135, guid: 6cdb5ef6764ef30448310aba99d170e7, type: 3}
       propertyPath: playerGameObject
       value: 
       objectReference: {fileID: 0}
