@@ -21724,7 +21724,7 @@ PrefabInstance:
     - target: {fileID: 1194644602033653538, guid: 7bc664d54c1f92541b6f62d897c75c10, type: 3}
       propertyPath: _bulletPrefab
       value: 
-      objectReference: {fileID: 3299635349750677119, guid: 7c2895d1e51208240a8adae4eb779fae, type: 3}
+      objectReference: {fileID: 3299635349750677119, guid: eada77a6748448d478a00be1e1080624, type: 3}
     - target: {fileID: 1194644602033653538, guid: 7bc664d54c1f92541b6f62d897c75c10, type: 3}
       propertyPath: m_facingRight
       value: 0

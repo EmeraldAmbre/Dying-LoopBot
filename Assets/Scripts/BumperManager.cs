@@ -7,6 +7,7 @@ public class BumperManager : MonoBehaviour {
     [SerializeField] float _bumpForce = 10;
 
     Rigidbody2D _playerRigidbody;
+    Rigidbody2D _corpseRigidbody;
     PlayerManager _playerManager;
 
     void OnTriggerEnter2D(Collider2D other) {
@@ -20,6 +21,14 @@ public class BumperManager : MonoBehaviour {
                 _playerRigidbody.velocity = Vector3.zero;
                 _playerRigidbody.AddForce(Vector2.up * _bumpForce, ForceMode2D.Impulse);
             }
+        }
+
+        else if (other.gameObject.tag == "Corpse") {
+
+            _corpseRigidbody = other.gameObject.GetComponent<Rigidbody2D>();
+            _corpseRigidbody.velocity = Vector3.zero;
+            _corpseRigidbody.AddForce(Vector2.up * _bumpForce, ForceMode2D.Impulse);
+
         }
     }
 }
