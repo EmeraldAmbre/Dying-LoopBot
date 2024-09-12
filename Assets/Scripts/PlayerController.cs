@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     public Transform groundCheck;
     
     private Rigidbody2D _rigidbody;
-    private CapsuleCollider2D _collider;
+    [SerializeField] private BoxCollider2D _groundCollider;
     private Animator _animator;
 
     [SerializeField] GameManager _gameManager;
@@ -56,7 +56,6 @@ public class PlayerController : MonoBehaviour {
     void Start() 
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<CapsuleCollider2D>();
         _animator = GetComponent<Animator>();
         if (_gameManager == null) { _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>(); }
         if (_playerManager == null) { _playerManager = GetComponent<PlayerManager>(); }
@@ -80,6 +79,20 @@ public class PlayerController : MonoBehaviour {
         }
 
         ClampVelocity();
+        Debug.Log("_rigidbody.velocity : " + _rigidbody.velocity);
+
+
+
+        if (_direction == 1 || _direction == -1)
+        {
+            _rigidbody.velocity = new Vector2(_movingSpeed * _direction, _rigidbody.velocity.y);
+        }
+        else
+        {
+            _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+
+        }
+
     }
 
     void Update() {
@@ -110,13 +123,14 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButton("Horizontal"))
         {
             _moveInput = Input.GetAxis("Horizontal");
-            _direction = (transform.right * _moveInput).x;
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + (transform.right * _moveInput), _movingSpeed * Time.deltaTime);
+            if (_moveInput > 0) _direction = 1;
+            else if (_moveInput < 0) _direction = -1;
             _animator.SetInteger("playerState", 1); // Turn on run animation
         }
         else
         {
             if (_isGrounded) _animator.SetInteger("playerState", 0); // Turn on idle animation
+            _direction = 0;
         }
     }
 
@@ -129,14 +143,12 @@ public class PlayerController : MonoBehaviour {
     }
     
     private void CheckGround() {
-        
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.transform.position, 0.2f);
         float extraHeightTest = 0.1f;
-        RaycastHit2D raycastHitGround = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size - new Vector3(0.5f, 0f, 0f), 0f, Vector2.down, extraHeightTest, _platformLayerMask);
+        RaycastHit2D raycastHitGround = Physics2D.BoxCast(_groundCollider.bounds.center, _groundCollider.bounds.size - new Vector3(0.1f, 0f, 0f), 0f, Vector2.down, extraHeightTest, _platformLayerMask);
         Color raycastGroundColor = Color.blue;
-        Debug.DrawRay(_collider.bounds.center + new Vector3(_collider.bounds.extents.x, 0), Vector2.down * (_collider.bounds.extents.y + extraHeightTest), raycastGroundColor);
-        Debug.DrawRay(_collider.bounds.center - new Vector3(_collider.bounds.extents.x, 0), Vector2.down * (_collider.bounds.extents.y + extraHeightTest), raycastGroundColor);
-        Debug.DrawRay(_collider.bounds.center - new Vector3(_collider.bounds.extents.x, _collider.bounds.extents.y + extraHeightTest), Vector2.right * (_collider.bounds.extents.x) * 2, raycastGroundColor);
+        Debug.DrawRay(_groundCollider.bounds.center + new Vector3(_groundCollider.bounds.extents.x, 0), Vector2.down * (_groundCollider.bounds.extents.y + extraHeightTest), raycastGroundColor);
+        Debug.DrawRay(_groundCollider.bounds.center - new Vector3(_groundCollider.bounds.extents.x, 0), Vector2.down * (_groundCollider.bounds.extents.y + extraHeightTest), raycastGroundColor);
+        Debug.DrawRay(_groundCollider.bounds.center - new Vector3(_groundCollider.bounds.extents.x, _groundCollider.bounds.extents.y + extraHeightTest), Vector2.right * (_groundCollider.bounds.extents.x) * 2, raycastGroundColor);
 
         _isGrounded = raycastHitGround.collider != null;
     
@@ -206,8 +218,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Jump()
     {
-        // _rigidbody.totalForce = Vector2.zero;
-        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x,0);
         _rigidbody.AddForce(transform.up * _jumpForce, ForceMode2D.Impulse);
         _isGrounded = false;
         _hasJump = true;
