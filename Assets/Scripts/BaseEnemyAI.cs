@@ -11,17 +11,24 @@ public class BaseEnemyAI : MonoBehaviour {
     private Rigidbody2D _rigidbody;
     private CapsuleCollider2D _hitBox;
     private float _timer;
-    
+    private Vector2 _initPosition;
+
     void Start() {
         
         _rigidbody = GetComponent<Rigidbody2D>();
         _hitBox = GetComponent<CapsuleCollider2D>();
         _timer = _moveLoopDuration;
-
+        _initPosition = transform.position;
 
     }
     
     void Update() {
+        // When player hit the button to respawn
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            transform.position = _initPosition;
+            _rigidbody.velocity = Vector2.zero;
+        }
 
         if (!_isStatic) {
 

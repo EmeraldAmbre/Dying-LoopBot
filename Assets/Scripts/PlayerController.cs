@@ -79,7 +79,6 @@ public class PlayerController : MonoBehaviour {
         }
 
         ClampVelocity();
-        Debug.Log("_rigidbody.velocity : " + _rigidbody.velocity);
 
 
 
