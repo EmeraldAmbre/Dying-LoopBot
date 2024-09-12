@@ -26,12 +26,20 @@ public class GameManager : MonoBehaviour {
 
     private List<GameObject> _listDeadPlayers = new List<GameObject>();
 
+    [SerializeField] private AudioClip _musicToPlay;
+    [SerializeField] private AudioClip[] _listRespawnAudioClip;
+    [SerializeField] private AudioClip[] _listResetDyingBodiesAudioClip;
+    [SerializeField] private AudioClip[] _listCheckpointAudioClip;
+
     void Start() {
 
         _activePlayer = Instantiate(_playerPrefab, _activeCheckpoint.transform.position, _activeCheckpoint.transform.rotation);
         _playerManager = _activePlayer.GetComponent<PlayerManager>();
-        UpdateUI();
 
+
+        if (_musicToPlay != null) AudioManager.Instance.PlayMusic(_musicToPlay);
+
+        UpdateUI();
 
     }
     
@@ -57,6 +65,10 @@ public class GameManager : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
+
+            AudioManager.Instance.RandomSoundEffect(_listResetDyingBodiesAudioClip,3);
+            Debug.Log("ResetDeadPlayers");
+
             foreach (GameObject deadPlayer in _listDeadPlayers)
             {
                 Destroy(deadPlayer);
@@ -70,6 +82,7 @@ public class GameManager : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
+            AudioManager.Instance.RandomSoundEffect(_listRespawnAudioClip, 3);
             _activePlayer.transform.position = _activeCheckpoint.transform.position;
         }
     }
@@ -110,7 +123,11 @@ public class GameManager : MonoBehaviour {
 
     public void ChangeActiveCheckpoint(GameObject cp) {
 
-        _activeCheckpoint = cp;
+        if(_activeCheckpoint != cp)
+        {
+            AudioManager.Instance.RandomSoundEffect(_listCheckpointAudioClip, 3);
+            _activeCheckpoint = cp;
+        }
 
     }
 

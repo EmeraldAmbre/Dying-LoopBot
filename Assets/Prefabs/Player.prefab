@@ -4988,6 +4988,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _playerManager: {fileID: 768439867213242141}
+  _listJumpAudioClip:
+  - {fileID: 8300000, guid: c5d5d27e48f0d124f88a346bca7589a9, type: 3}
+  - {fileID: 8300000, guid: 76efa4bfac2d0d6478aace764b3b39ac, type: 3}
+  - {fileID: 8300000, guid: 664da7797a99f534f93809e7f3b2916b, type: 3}
+  - {fileID: 8300000, guid: db364c75eb7f5bf46afb9dd4b47580ab, type: 3}
+  - {fileID: 8300000, guid: 5ee55e9f8a22c854ebaeae7aa61303d4, type: 3}
+  _listRespawnAudioClip:
+  - {fileID: 8300000, guid: 9c1dc7c8e11a7474abe174a688063d77, type: 3}
+  _listResetDyingBodiesAudioClip:
+  - {fileID: 8300000, guid: 29e28dca78b88f04ea474c5055d4c4c0, type: 3}
 --- !u!114 &768439867213242141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5001,6 +5011,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_deathState: 0
+  _listCoinCollectedAudioClip:
+  - {fileID: 8300000, guid: ac215508c35d4f445af50ef360cfa1a2, type: 3}
+  _listDeathAudioClip:
+  - {fileID: 8300000, guid: b1b0d52492e570944b90f5b678bcf4a4, type: 3}
+  _listDeathFreezedAudioClip:
+  - {fileID: 8300000, guid: 9c8403c7cadd5544ca02549a0dcbd41d, type: 3}
   _gameManager: {fileID: 0}
 --- !u!70 &2246824782735055055
 CapsuleCollider2D:

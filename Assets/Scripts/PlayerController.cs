@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour {
     private float _yMinVelocity = -13;
     private float _yMaxVelocity = 20;
 
+    [SerializeField] private AudioClip[] _listJumpAudioClip;
+
 
 
     void Start() 
@@ -217,6 +219,8 @@ public class PlayerController : MonoBehaviour {
         _isGrounded = false;
         _hasJump = true;
         _currentCoyoteTime = 0;
+
+        AudioManager.Instance.RandomSoundEffect(_listJumpAudioClip);
     }
 
     private void HandleCoyoteJump()

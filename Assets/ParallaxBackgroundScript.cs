@@ -43,7 +43,6 @@ public class ParallaxBackgroundScript : MonoBehaviour
 
 
             transform.position = new Vector3(_startPosition + distance, transform.position.y, transform.position.z);
-            Debug.Log("_autoScrollingOffset :" + _autoScrollingOffset); 
 
             if (Mathf.Abs(_autoScrollingOffset) > _lenght) _autoScrollingOffset = 0;
         }

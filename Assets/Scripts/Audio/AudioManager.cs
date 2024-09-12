@@ -6,19 +6,19 @@ using UnityEngine;
 
 
 // Uses :
-//  SoundManager.Instance.PlayMusic(BattleMusic); 
-//  SoundManager.Instance.RandomSoundEffect(AttackNoises);
+//  AudioManager.Instance.PlayMusic(BattleMusic); 
+//  AudioManager.Instance.RandomSoundEffect(AttackNoises);
 
 
 public class AudioManager : MonoBehaviour
 {
     // Audio players components.
-    public AudioSource EffectsSource;
+    public AudioSource[] listSfxAudioSourc;
     public AudioSource MusicSource;
 
     // Random pitch adjustment range.
-    public float LowPitchRange = .95f;
-    public float HighPitchRange = 1.05f;
+    public float LowPitchRange = .8f;
+    public float HighPitchRange = 1.2f;
 
     // Singleton instance.
     public static AudioManager Instance = null;
@@ -42,10 +42,10 @@ public class AudioManager : MonoBehaviour
     }
 
     // Play a single clip through the sound effects source.
-    public void Play(AudioClip clip)
+    public void Play(AudioClip clip, int bus = 0)
     {
-        EffectsSource.clip = clip;
-        EffectsSource.Play();
+        listSfxAudioSourc[bus].clip = clip;
+        listSfxAudioSourc[bus].Play();
     }
 
     // Play a single clip through the music source.
@@ -56,14 +56,14 @@ public class AudioManager : MonoBehaviour
     }
 
     // Play a random clip from an array, and randomize the pitch slightly.
-    public void RandomSoundEffect(params AudioClip[] clips)
+    public void RandomSoundEffect(AudioClip[] clips, int bus = 0 )
     {
         int randomIndex = Random.Range(0, clips.Length);
         float randomPitch = Random.Range(LowPitchRange, HighPitchRange);
 
-        EffectsSource.pitch = randomPitch;
-        EffectsSource.clip = clips[randomIndex];
-        EffectsSource.Play();
+        listSfxAudioSourc[bus].pitch = randomPitch;
+        listSfxAudioSourc[bus].clip = clips[randomIndex];
+        listSfxAudioSourc[bus].Play();
     }
 
 }

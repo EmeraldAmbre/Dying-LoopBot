@@ -24,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8125563719255511132}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8125563719255511135
 MonoBehaviour:
@@ -43,7 +44,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d255ee49c2be2343b958ec319cdf534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinsCounter: 0
-  playerGameObject: {fileID: 0}
-  deathPlayerPrefab: {fileID: 1904219114179032792, guid: 798a6396cbec6cc4bbf4c6447558fad6, type: 3}
-  coinText: {fileID: 0}
+  m_freezeTest: 0
+  m_coinsCounter: 0
+  m_deathsCounter: 0
+  _playerPrefab: {fileID: 0}
+  _deathPlayerPrefab: {fileID: 0}
+  _deathFreezedPlayerPrefab: {fileID: 0}
+  _playerManager: {fileID: 0}
+  _activeCheckpoint: {fileID: 0}
+  _coinText: {fileID: 0}
+  _craneText: {fileID: 0}
+  _activePlayer: {fileID: 0}
+  _nb_DeadPlayersLimit: 2
+  _listRespawnAudioClip:
+  - {fileID: 8300000, guid: 9c1dc7c8e11a7474abe174a688063d77, type: 3}
+  _listResetDyingBodiesAudioClip:
+  - {fileID: 8300000, guid: 74a913e70f782ce4287184444bad3b27, type: 3}
+  _listCheckpointAudioClip:
+  - {fileID: 8300000, guid: d9032b332d68aed4aa73e44c99a1d4c0, type: 3}

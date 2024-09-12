@@ -9,6 +9,12 @@ public class PlayerManager : MonoBehaviour {
     private Rigidbody2D _rigidbody;
     private Animator _animator;
 
+
+    [SerializeField] private AudioClip[] _listCoinCollectedAudioClip;
+    [SerializeField] private AudioClip[] _listDeathAudioClip;
+    [SerializeField] private AudioClip[] _listDeathFreezedAudioClip;
+
+
     [SerializeField] GameManager _gameManager;
 
     void Awake() {
@@ -27,6 +33,8 @@ public class PlayerManager : MonoBehaviour {
             _gameManager.m_coinsCounter += 1;
             Destroy(other.gameObject);
 
+            AudioManager.Instance.RandomSoundEffect(_listCoinCollectedAudioClip ,1);
+
         }
 
         else if (other.gameObject.tag == "Bullet") {
@@ -38,6 +46,8 @@ public class PlayerManager : MonoBehaviour {
             _gameManager.m_deathsCounter += 1;
             m_deathState = true;
 
+            AudioManager.Instance.RandomSoundEffect(_listDeathFreezedAudioClip ,2);
+
         }
     }
 
@@ -48,12 +58,16 @@ public class PlayerManager : MonoBehaviour {
             _gameManager.m_deathsCounter += 1;
             m_deathState = true;
 
+            AudioManager.Instance.RandomSoundEffect(_listDeathAudioClip ,2); ;
+
         }
         else if (other.gameObject.tag == "FreezeEnemy")
         {
             _gameManager.m_freezeTest = true;
             _gameManager.m_deathsCounter += 1;
             m_deathState = true;
+
+            AudioManager.Instance.RandomSoundEffect(_listDeathFreezedAudioClip ,2);
 
         }
     }
