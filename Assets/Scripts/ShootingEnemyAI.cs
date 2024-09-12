@@ -56,6 +56,7 @@ public class ShootingEnemyAI : MonoBehaviour {
             _shootTimer = _shootLoopDuration;
             GameObject bullet = Instantiate(_bulletPrefab, _shootingPoint.transform.position, _shootingPoint.transform.rotation);
             BulletManager bulletManager = bullet.GetComponent<BulletManager>();
+            m_facingRight = transform.localScale. x == 1 ? true : false;
             bulletManager.m_isGoingRight = m_facingRight;
             _animator.SetTrigger("isShooting");
             Destroy(bullet, bulletManager.m_lifeTime);

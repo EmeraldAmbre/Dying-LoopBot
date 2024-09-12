@@ -49,6 +49,13 @@ public class PlayerManager : MonoBehaviour {
             m_deathState = true;
 
         }
+        else if (other.gameObject.tag == "FreezeEnemy")
+        {
+            _gameManager.m_freezeTest = true;
+            _gameManager.m_deathsCounter += 1;
+            m_deathState = true;
+
+        }
     }
 
 }

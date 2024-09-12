@@ -10,6 +10,7 @@ TagManager:
   - Bullet
   - Portal
   - Corpse
+  - FreezeEnemy
   layers:
   - Default
   - TransparentFX

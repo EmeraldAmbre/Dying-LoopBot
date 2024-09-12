@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 4114574262018229794}
   - component: {fileID: 1194644602033653538}
   m_Layer: 0
-  m_Name: ShootingEnemy
+  m_Name: IceShootingEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
   _isStatic: 1
   _moveLoopDuration: 2
   _shootLoopDuration: 2
-  _bulletPrefab: {fileID: 3299635349750677119, guid: eada77a6748448d478a00be1e1080624, type: 3}
+  _bulletPrefab: {fileID: 3299635349750677119, guid: 7c2895d1e51208240a8adae4eb779fae, type: 3}
   _shootingPoint: {fileID: 2914168937532510276}
   m_facingRight: 1
 --- !u!1 &7718522107849102828
@@ -244,7 +244,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -283182137, guid: 759afe99010c39c4e8dd29e755e3d781, type: 3}
-  m_Color: {r: 0.6698113, g: 0.31278923, b: 0.31278923, a: 1}
+  m_Color: {r: 0.43867922, g: 0.7367773, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

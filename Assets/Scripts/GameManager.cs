@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     
     [SerializeField] GameObject _playerPrefab;
     [SerializeField] GameObject _deathPlayerPrefab;
+    [SerializeField] GameObject _deathFreezedPlayerPrefab;
     [SerializeField] PlayerManager _playerManager;
     [SerializeField] GameObject _activeCheckpoint;
 
@@ -20,38 +21,86 @@ public class GameManager : MonoBehaviour {
     [SerializeField] Text _craneText;
 
     [SerializeField] GameObject _activePlayer;
+    
+    [SerializeField] private int _nb_DeadPlayersLimit = 2;
+
+    private List<GameObject> _listDeadPlayers = new List<GameObject>();
 
     void Start() {
 
         _activePlayer = Instantiate(_playerPrefab, _activeCheckpoint.transform.position, _activeCheckpoint.transform.rotation);
         _playerManager = _activePlayer.GetComponent<PlayerManager>();
-    
+        UpdateUI();
+
+
     }
     
-    void Update() {
-        
-        _coinText.text = m_coinsCounter.ToString();
-        _craneText.text = m_deathsCounter.ToString();
-        
-        if (_playerManager.m_deathState) {
-
-            _activePlayer.SetActive(false);
-            GameObject deadPlayer = Instantiate(_deathPlayerPrefab, _activePlayer.transform.position, _activePlayer.transform.rotation);
-            deadPlayer.transform.localScale = new Vector3(_playerPrefab.transform.localScale.x, _playerPrefab.transform.localScale.y, _playerPrefab.transform.localScale.z);
-            
-            if (m_freezeTest) {
-
-                DeadPlayerManager deadPlayerManager = deadPlayer.GetComponent<DeadPlayerManager>();
-                deadPlayerManager.Freeze();
-                m_freezeTest = false;
-
-            }
+    void Update()
+    {
+        if (_playerManager.m_deathState)
+        {
+            InstantiateDeadPlayer();
 
             Respawn();
-        
+
+            UpdateUI();
+
+        }
+
+        HandleResetDeadPlayerList();
+
+        HandleManualRespawn();
+
+    }
+
+    private void HandleResetDeadPlayerList()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            foreach (GameObject deadPlayer in _listDeadPlayers)
+            {
+                Destroy(deadPlayer);
+            }
+            _listDeadPlayers.Clear();
+            UpdateUI();
         }
     }
-    
+
+    private void HandleManualRespawn()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            _activePlayer.transform.position = _activeCheckpoint.transform.position;
+        }
+    }
+
+    private void InstantiateDeadPlayer()
+    {
+        // Instantiate dead player prefab on scene regarding the freeze status
+        _activePlayer.SetActive(false);
+        GameObject deadPlayer;
+        if (m_freezeTest) deadPlayer = Instantiate(_deathFreezedPlayerPrefab, _activePlayer.transform.position, _activePlayer.transform.rotation);
+        else deadPlayer = Instantiate(_deathPlayerPrefab, _activePlayer.transform.position, _activePlayer.transform.rotation);
+        deadPlayer.transform.localScale = new Vector3(_playerPrefab.transform.localScale.x, _playerPrefab.transform.localScale.y, _playerPrefab.transform.localScale.z);
+        m_freezeTest = false;
+        _playerManager.m_deathState = false;
+        // Add the dead player to the list
+        _listDeadPlayers.Add(deadPlayer);
+        if (_listDeadPlayers.Count > _nb_DeadPlayersLimit)
+        {
+            Destroy(_listDeadPlayers[0]);
+            _listDeadPlayers.RemoveAt(0);
+        }
+    }
+
+    private void UpdateUI()
+    {
+        _coinText.text = m_coinsCounter.ToString();
+        string crane_nb = _listDeadPlayers.Count.ToString() + " / " + _nb_DeadPlayersLimit.ToString();
+        Debug.Log(crane_nb);
+        _craneText.text = crane_nb;
+    }
+
     private void Respawn() {
 
         _activePlayer = Instantiate(_playerPrefab, _activeCheckpoint.transform.position, _activeCheckpoint.transform.rotation);
