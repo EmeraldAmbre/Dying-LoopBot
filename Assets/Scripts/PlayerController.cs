@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     
-
-
     private float _moveInput;
     private bool _isGrounded;
     private float _direction = 1;
-
-
-    public Transform groundCheck;
     
     private Rigidbody2D _rigidbody;
     [SerializeField] private BoxCollider2D _groundCollider;
