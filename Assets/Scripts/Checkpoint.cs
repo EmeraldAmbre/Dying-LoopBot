@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Checkpoint : MonoBehaviour {
 
     [SerializeField] GameManager _gameManager;
-    [SerializeField] bool _isFinalCheckpoint;
+    public bool _isFinalCheckpoint;
     [SerializeField] string _sceneTransitionName;
     [SerializeField] float _sceneTransitionDelay = 1f;
 
@@ -30,6 +30,7 @@ public class Checkpoint : MonoBehaviour {
             if (_isFinalCheckpoint) {
 
                 StartCoroutine(LoadSceneWithDelay(_sceneTransitionDelay, _sceneTransitionName));
+                _gameManager.ChangeActiveCheckpoint(gameObject);
                 return;
 
             }
@@ -40,6 +41,8 @@ public class Checkpoint : MonoBehaviour {
 
                 Checkpoint manager = checkpoint.GetComponent<Checkpoint>();
                 manager.m_isActive = false;
+
+               
 
             }
 
