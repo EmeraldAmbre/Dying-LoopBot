@@ -15,6 +15,9 @@ public class BumperManager : MonoBehaviour {
         if (other.gameObject.tag == "Player") {
 
             _playerManager = other.gameObject.GetComponent<PlayerManager>();
+            other.gameObject.GetComponent<PlayerController>().canJumpHigher = false;
+
+            
             _playerRigidbody = other.gameObject.GetComponent<Rigidbody2D>();
 
             if (_playerManager.m_deathState == false) {

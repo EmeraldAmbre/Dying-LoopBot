@@ -44,7 +44,9 @@ public class PlayerController : MonoBehaviour {
     private float _xMaxVelocity = 20;
 
     private float _yMinVelocity = -13;
-    private float _yMaxVelocity = 20;
+    private float _yMaxVelocity = 40;
+
+    public bool canJumpHigher = true;
 
     [SerializeField] private AudioClip[] _listJumpAudioClip;
 
@@ -147,7 +149,10 @@ public class PlayerController : MonoBehaviour {
         Debug.DrawRay(_groundCollider.bounds.center - new Vector3(_groundCollider.bounds.extents.x, _groundCollider.bounds.extents.y + extraHeightTest), Vector2.right * (_groundCollider.bounds.extents.x) * 2, raycastGroundColor);
 
         _isGrounded = raycastHitGround.collider != null;
-    
+
+        if (_isGrounded) canJumpHigher = true;
+
+
     }
 
     #region Rigibody modification related methods
@@ -202,7 +207,7 @@ public class PlayerController : MonoBehaviour {
             _isGrounded = false;
             _hasJump = true;
         }
-        else if (Input.GetKey(KeyCode.Space) && !_isGrounded && _hasJump && _rigidbody.velocity.y > 0)
+        else if (Input.GetKey(KeyCode.Space) && !_isGrounded && _hasJump && _rigidbody.velocity.y > 0 && canJumpHigher)
         {
             _isJumpgHanndlingTriggered = true;
         }

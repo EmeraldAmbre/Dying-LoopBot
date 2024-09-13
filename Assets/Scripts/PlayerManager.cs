@@ -45,8 +45,8 @@ public class PlayerManager : MonoBehaviour {
 
             _gameManager.m_deathsCounter += 1;
             m_deathState = true;
-
-            AudioManager.Instance.RandomSoundEffect(_listDeathFreezedAudioClip ,2);
+            if(_gameManager.m_freezeTest) AudioManager.Instance.RandomSoundEffect(_listDeathFreezedAudioClip, 2);
+            else AudioManager.Instance.RandomSoundEffect(_listDeathAudioClip, 2);
 
         }
     }
