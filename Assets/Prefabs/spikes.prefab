@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2370058098865023723}
   - component: {fileID: 2370058098865023720}
   m_Layer: 0
-  m_Name: Spikes
+  m_Name: spikes
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2619d8d2089663a478ac3035deedf2d3, type: 3}
+  m_Sprite: {fileID: -141347678, guid: af8fe103f528b1e49ae51078d7e81aa1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -121,7 +121,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.17, y: 0.39}
+    oldSize: {x: 1.05, y: 0.38}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

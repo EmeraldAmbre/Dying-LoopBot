@@ -56,9 +56,12 @@ MonoBehaviour:
   _craneText: {fileID: 0}
   _activePlayer: {fileID: 0}
   _nb_DeadPlayersLimit: 2
+  _musicToPlay: {fileID: 0}
   _listRespawnAudioClip:
   - {fileID: 8300000, guid: 9c1dc7c8e11a7474abe174a688063d77, type: 3}
   _listResetDyingBodiesAudioClip:
   - {fileID: 8300000, guid: 74a913e70f782ce4287184444bad3b27, type: 3}
   _listCheckpointAudioClip:
   - {fileID: 8300000, guid: d9032b332d68aed4aa73e44c99a1d4c0, type: 3}
+  _listVictoryAudioClip:
+  - {fileID: 8300000, guid: 7e2c72ebc3e33ec4eb06812cdd1c1a25, type: 3}

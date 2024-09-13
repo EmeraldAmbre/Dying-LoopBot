@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 499851286468877956}
   - component: {fileID: 6315427586489182205}
   m_Layer: 0
-  m_Name: CheckPoint
+  m_Name: FinalCheckPoint
   m_TagString: Checkpoint
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.76, y: 1.92}
+    oldSize: {x: 1.09, y: 0.76}
     newSize: {x: 1.76, y: 1.92}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameManager: {fileID: 0}
-  _isFinalCheckpoint: 0
+  _isFinalCheckpoint: 1
   _sceneTransitionName: 
   _sceneTransitionDelay: 1
   m_isActive: 0
@@ -138,7 +138,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -2
-  m_Sprite: {fileID: 1076733923, guid: af8fe103f528b1e49ae51078d7e81aa1, type: 3}
+  m_Sprite: {fileID: -2004756999, guid: af8fe103f528b1e49ae51078d7e81aa1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

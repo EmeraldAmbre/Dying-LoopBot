@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private AudioClip[] _listRespawnAudioClip;
     [SerializeField] private AudioClip[] _listResetDyingBodiesAudioClip;
     [SerializeField] private AudioClip[] _listCheckpointAudioClip;
+    [SerializeField] private AudioClip[] _listVictoryAudioClip;
 
     void Start() {
 
@@ -125,8 +126,11 @@ public class GameManager : MonoBehaviour {
 
         if(_activeCheckpoint != cp)
         {
-            AudioManager.Instance.RandomSoundEffect(_listCheckpointAudioClip, 3);
+            if (cp.GetComponent<Checkpoint>()._isFinalCheckpoint) AudioManager.Instance.RandomSoundEffect(_listVictoryAudioClip, 3);
+            else AudioManager.Instance.RandomSoundEffect(_listCheckpointAudioClip, 3);
+
             _activeCheckpoint = cp;
+            cp.GetComponent<Animation>().Play();
         }
 
     }
